@@ -1,5 +1,3 @@
-// src/components/InputForm.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -13,26 +11,28 @@ export default function InputForm({ onSubmit }: InputFormProps) {
   const [grade, setGrade] = useState("");
 
   return (
-    <div className="bg-white p-4 rounded shadow space-y-3">
-      <input
-        placeholder="Enter topic (e.g. Photosynthesis)"
-        value={topic}
-        onChange={(e) => setTopic(e.target.value)}
-        className="border p-2 w-full rounded"
-      />
-
-      <input
-        placeholder="Enter grade (e.g. 6)"
-        value={grade}
-        onChange={(e) => setGrade(e.target.value)}
-        className="border p-2 w-full rounded"
-      />
-
-      <button
-        onClick={() => onSubmit(topic, grade)}
-        className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-      >
-        Generate 🚀
+    <div className="card">
+      <div className="section-label">New Topic</div>
+      <div className="input-grid">
+        <div className="field">
+          <input
+            placeholder="Topic — e.g. Photosynthesis, Black Holes…"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSubmit(topic, grade)}
+          />
+        </div>
+        <div className="field">
+          <input
+            placeholder="Grade"
+            value={grade}
+            onChange={(e) => setGrade(e.target.value)}
+          />
+        </div>
+      </div>
+      <button className="btn-primary" onClick={() => onSubmit(topic, grade)}>
+        <span>Generate</span>
+        <span style={{ fontSize: "16px" }}>→</span>
       </button>
     </div>
   );

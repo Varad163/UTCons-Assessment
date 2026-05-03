@@ -4,11 +4,14 @@ type KeyPointsProps = {
 
 export default function KeyPoints({ points }: KeyPointsProps) {
   return (
-    <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-xl font-bold mb-2">📌 Key Points</h2>
-      <ul className="list-disc ml-5 space-y-1">
+    <div className="card">
+      <div className="section-label">Key Points</div>
+      <ul className="key-points-list">
         {points.map((p, i) => (
-          <li key={i}>{p}</li>
+          <li key={i} className="key-point-item">
+            <span className="key-point-num">{String(i + 1).padStart(2, "0")}</span>
+            <span>{p}</span>
+          </li>
         ))}
       </ul>
     </div>
