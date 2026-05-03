@@ -16,7 +16,6 @@ ${text}
     const res = await model.invoke(prompt);
     return res.content as string;
   } catch (error) {
-    // fallback if paraphrasing fails
     return text;
   }
 }

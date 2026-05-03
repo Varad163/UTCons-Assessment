@@ -1,4 +1,3 @@
-// src/lib/validator.ts
 
 export function validateResponse(data: any) {
   if (!data) {
