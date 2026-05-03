@@ -59,10 +59,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 text-black">
       <div className="max-w-3xl mx-auto space-y-6">
 
-        <h1 className="text-3xl font-bold text-center">
+        <h1 className="text-3xl font-bold text-center text-black">
           🤖 AI Learning Assistant
         </h1>
 
@@ -70,14 +70,16 @@ export default function Home() {
 
         {/* 🔄 History */}
         {history.length > 0 && (
-          <div className="bg-white p-4 rounded shadow">
-            <h2 className="font-semibold mb-2">🕘 Recent Topics</h2>
+          <div className="bg-white p-4 rounded shadow text-black">
+            <h2 className="font-bold text-lg mb-2 text-black">
+              🕘 Recent Topics
+            </h2>
             <div className="flex gap-2 flex-wrap">
               {history.map((t, i) => (
                 <button
                   key={i}
                   onClick={() => handleSubmit(t, "6")}
-                  className="bg-gray-200 px-3 py-1 rounded"
+                  className="bg-gray-200 px-3 py-1 rounded font-semibold text-black hover:bg-gray-300"
                 >
                   {t}
                 </button>
@@ -88,28 +90,28 @@ export default function Home() {
 
         {/* ⏳ Loading */}
         {loading && (
-          <div className="text-center text-blue-500 font-semibold">
+          <div className="text-center text-black font-semibold">
             ⏳ Generating content...
           </div>
         )}
 
         {/* ❌ Error */}
         {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded">
+          <div className="bg-red-100 text-red-700 p-3 rounded font-medium">
             ❌ {error}
           </div>
         )}
 
         {/* 📊 Output */}
         {data && (
-          <div className="space-y-4">
+          <div className="space-y-4 text-black">
             <Summary text={data.summary} />
             <KeyPoints points={data.keyPoints} />
             <Quiz quiz={data.quiz} />
 
             <button
               onClick={handleRegenerate}
-              className="bg-purple-500 text-white px-4 py-2 rounded"
+              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
             >
               🔄 Regenerate
             </button>
