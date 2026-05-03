@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { model } from "@/lib/langchain";
 import { getPrompt } from "@/lib/prompt";
 import { validateResponse } from "@/lib/validator";
-import { simplifySummary } from "@/lib/ paraphrase"; // ✅ FIXED import
+import { simplifySummary } from "@/lib/paraphrase"; // ✅ FIXED import
 
 // 🔧 Extract JSON safely (for Groq responses)
 function extractJSON(text: string) {
@@ -60,9 +60,11 @@ export async function POST(req: NextRequest) {
     const simplifiedSummary = await simplifySummary(parsed.summary);
 
     const finalResponse = {
-      ...parsed,
-      summary: simplifiedSummary,
-    };
+  originalSummary: parsed.summary,
+  simplifiedSummary: simplifiedSummary,
+  keyPoints: parsed.keyPoints,
+  quiz: parsed.quiz,
+};
 
     return NextResponse.json(finalResponse);
   } catch (err) {

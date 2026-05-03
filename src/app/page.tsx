@@ -7,21 +7,21 @@ import InputForm from "@/components/InputForm";
 import Summary from "@/components/Summary";
 import KeyPoints from "@/components/KeyPoints";
 import Quiz from "@/components/Quiz";
+import { AIResponse } from "@/types";
 
 export default function Home() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AIResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [lastTopic, setLastTopic] = useState("");
   const [history, setHistory] = useState<string[]>([]);
+  const [showSimple, setShowSimple] = useState(true);
 
-  // 📦 Load last searches
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("history") || "[]");
     setHistory(stored);
   }, []);
 
-  // 💾 Save last 3 searches
   const saveHistory = (topic: string) => {
     const updated = [topic, ...history.filter((t) => t !== topic)].slice(0, 3);
     setHistory(updated);
@@ -53,7 +53,6 @@ export default function Home() {
     }
   };
 
-  // 🔄 Regenerate
   const handleRegenerate = () => {
     if (lastTopic) handleSubmit(lastTopic, "6");
   };
@@ -62,60 +61,66 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100 p-6 text-black">
       <div className="max-w-3xl mx-auto space-y-6">
 
-        <h1 className="text-3xl font-bold text-center text-black">
+        <h1 className="text-3xl font-bold text-center">
           🤖 AI Learning Assistant
         </h1>
 
         <InputForm onSubmit={handleSubmit} />
 
-        {/* 🔄 History */}
+        {/* Toggle */}
+        {data && (
+          <button
+            onClick={() => setShowSimple(!showSimple)}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            {showSimple ? "Show Normal Explanation" : "Show Simplified"}
+          </button>
+        )}
+
+        {/* History */}
         {history.length > 0 && (
-          <div className="bg-white p-4 rounded shadow text-black">
-            <h2 className="font-bold text-lg mb-2 text-black">
-              🕘 Recent Topics
-            </h2>
-            <div className="flex gap-2 flex-wrap">
-              {history.map((t, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSubmit(t, "6")}
-                  className="bg-gray-200 px-3 py-1 rounded font-semibold text-black hover:bg-gray-300"
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="font-bold mb-2">🕘 Recent Topics</h2>
+            {history.map((t, i) => (
+              <button
+                key={i}
+                onClick={() => handleSubmit(t, "6")}
+                className="bg-gray-200 px-2 py-1 m-1 rounded"
+              >
+                {t}
+              </button>
+            ))}
           </div>
         )}
 
-        {/* ⏳ Loading */}
-        {loading && (
-          <div className="text-center text-black font-semibold">
-            ⏳ Generating content...
-          </div>
-        )}
+        {loading && <p>⏳ Generating...</p>}
 
-        {/* ❌ Error */}
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded font-medium">
+          <div className="bg-red-100 text-red-600 p-3 rounded">
             ❌ {error}
           </div>
         )}
 
-        {/* 📊 Output */}
         {data && (
-          <div className="space-y-4 text-black">
-            <Summary text={data.summary} />
+          <>
+           <Summary
+  text={
+    showSimple
+      ? data.simplifiedSummary
+      : data.originalSummary
+  }
+  isSimple={showSimple}
+/>
             <KeyPoints points={data.keyPoints} />
             <Quiz quiz={data.quiz} />
 
             <button
               onClick={handleRegenerate}
-              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+              className="bg-purple-500 text-white px-4 py-2 rounded"
             >
               🔄 Regenerate
             </button>
-          </div>
+          </>
         )}
       </div>
     </div>

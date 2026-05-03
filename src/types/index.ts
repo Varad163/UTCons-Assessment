@@ -5,8 +5,8 @@ export interface QuizQuestion {
 }
 
 export interface AIResponse {
-  summary: string;
+  originalSummary: string;
+  simplifiedSummary: string;
   keyPoints: string[];
   quiz: QuizQuestion[];
 }
-
